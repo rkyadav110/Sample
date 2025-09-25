@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kal Ghumne Jana Hai?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            z-index: 10;
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+            line-height: 1.4;
+        }
+
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            position: relative;
+            margin-bottom: 20px;
+            min-height: 60px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            min-width: 120px;
+        }
+
+        .yes-btn {
+            background: linear-gradient(to right, #4CAF50, #45a049);
+            color: white;
+            z-index: 10;
+            position: relative;
+        }
+
+        .yes-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .no-btn {
+            background: linear-gradient(to right, #f44336, #d32f2f);
+            color: white;
+            position: absolute;
+        }
+
+        .message {
+            margin-top: 10px;
+            font-size: 18px;
+            color: #4CAF50;
+            font-weight: bold;
+            min-height: 27px;
+            transition: all 0.3s ease;
+        }
+
+        /* Animation for the message */
+        @keyframes celebrate {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .celebrate {
+            animation: celebrate 0.5s ease 3;
+            color: #ff6b6b;
+        }
+
+        /* Responsive design */
+        @media (max-width: 600px) {
+            .card {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+                font-size: 14px;
+                min-width: 100px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            h1 {
+                font-size: 20px;
+            }
+            
+            .btn {
+                padding: 8px 16px;
+                font-size: 13px;
+                min-width: 90px;
+            }
+            
+            .buttons-container {
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>Kal Ghumne Jana Hai?</h1>
+            <div class="buttons-container">
+                <button id="yes-btn" class="btn yes-btn">Haan Bilkul! 👍</button>
+                <button id="no-btn" class="btn no-btn">Nahi 😒</button>
+            </div>
+            <div class="message" id="message"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const yesBtn = document.getElementById('yes-btn');
+            const noBtn = document.getElementById('no-btn');
+            const message = document.getElementById('message');
+            const card = document.querySelector('.card');
+            
+            // Function to move the No button to a random position anywhere on screen
+            function moveNoButton() {
+                const noBtnRect = noBtn.getBoundingClientRect();
+                
+                // Calculate maximum positions to keep button within visible screen
+                const maxX = window.innerWidth - noBtnRect.width - 20;
+                const maxY = window.innerHeight - noBtnRect.height - 20;
+                
+                // Generate random positions
+                const randomX = Math.floor(Math.random() * maxX);
+                const randomY = Math.floor(Math.random() * maxY);
+                
+                // Apply new position with transition
+                noBtn.style.transition = 'all 0.4s ease';
+                noBtn.style.position = 'fixed';
+                noBtn.style.left = `${randomX}px`;
+                noBtn.style.top = `${randomY}px`;
+                noBtn.style.zIndex = '1000';
+                
+                // Add a little shake effect to make it more fun
+                noBtn.style.transform = 'rotate(5deg)';
+                setTimeout(() => {
+                    noBtn.style.transform = 'rotate(0deg)';
+                }, 400);
+            }
+            
+            // Event listeners for the No button - mouse events for desktop
+            noBtn.addEventListener('mouseover', moveNoButton);
+            noBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                moveNoButton();
+                message.textContent = "Nahi ka option hi nahi hai! 😜";
+                message.classList.add('celebrate');
+                setTimeout(() => {
+                    message.classList.remove('celebrate');
+                }, 1500);
+            });
+            
+            // Touch events for mobile devices
+            noBtn.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                // Move button immediately on touch for mobile
+                moveNoButton();
+                message.textContent = "Pakad mein nahi aayega! 🏃";
+                message.classList.add('celebrate');
+                setTimeout(() => {
+                    message.classList.remove('celebrate');
+                }, 1500);
+            });
+            
+            // Also move when finger gets close to the button on mobile
+            noBtn.addEventListener('touchmove', function(e) {
+                e.preventDefault();
+                moveNoButton();
+            });
+            
+            // Event listener for the Yes button
+            yesBtn.addEventListener('click', function() {
+                message.textContent = "Dhanyavad hn bolne k liye! 🙏";
+                message.classList.add('celebrate');
+                card.style.transform = "scale(1.05)";
+                
+                // Reset transformation after animation
+                setTimeout(() => {
+                    card.style.transform = "scale(1)";
+                    message.classList.remove('celebrate');
+                }, 1500);
+                
+                // Reset No button position
+                noBtn.style.position = 'relative';
+                noBtn.style.left = 'auto';
+                noBtn.style.top = 'auto';
+                noBtn.style.zIndex = 'auto';
+            });
+            
+            // Initialize the No button position within the container
+            function initializeNoButton() {
+                noBtn.style.position = 'relative';
+                noBtn.style.left = 'auto';
+                noBtn.style.top = 'auto';
+                noBtn.style.zIndex = 'auto';
+            }
+            
+            initializeNoButton();
+        });
+    </script>
+</body>
+</html>
